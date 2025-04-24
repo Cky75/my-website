@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Hey Steve, Answer This!</title>
+  
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  
+  <!-- Optional Favicon (Add a favicon.ico in your folder if you want it) -->
+  <link rel="icon" href="favicon.ico" />
+
+  <style>
+    body {
+      font-family: 'Courier New', monospace;
+      background-color: #1b5e20;
+      color: #fff;
+      text-align: center;
+      padding: 50px;
+      background-attachment: fixed;
+    }
+
+    h1 {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 2rem;
+      color: #a8e47b;
+      margin-bottom: 30px;
+      text-shadow: 2px 2px 8px #000;
+    }
+
+    .game-box {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 40px;
+      border-radius: 10px;
+      max-width: 700px;
+      margin: auto;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+    }
+
+    button {
+      font-size: 1rem;
+      padding: 12px 25px;
+      margin: 20px 10px;
+      background-color: #388e3c;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #66bb6a;
+      transform: scale(1.1);
+    }
+
+    .question, .answer {
+      font-size: 1.4rem;
+      margin: 20px 0;
+      min-height: 60px;
+      color: #d5f8d5;
+      text-shadow: 1px 1px 3px #000;
+    }
+
+    .answer {
+      font-style: italic;
+    }
+
+    @media (max-width: 768px) {
+      .game-box {
+        padding: 20px;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Hey Steve... Tell me your ways.</h1>
+  <div class="game-box">
+    <div class="question" id="question">Hey, Steve?</div>
+    <div class="answer" id="answer"></div>
+    <button onclick="getQuestion()">Let me ask you this...</button>
+    <button onclick="showAnswer()">Spill the Beans!</button>
+    <button id="restartButton" style="display:none" onclick="restartGame()">Want some knowledge again?</button>
+  </div>
+
+  <!-- Background Music -->
+  <audio id="minecraft-music" loop autoplay>
+    <source src="https://www.minecraft.net/content/dam/minecraft/creative/music/minecraft-music.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    const questions = [
+      "Steve, why don’t you talk? You okay, bud?",
+      "You lit your house on fire again, didn’t you?",
+      "How do you even ride a chicken, Steve?",
+      "You seriously went into the Nether... on purpose?",
+      "Crafting table ≠ bed, Steve. You tried it again, huh?",
+      "Was that TNT mining or just emotional damage?",
+      "Why does lava wait for you like an ex with receipts?",
+      "Be honest—are you actually Steve or just Jack Black in pixels?",
+      "Why do creepers hate your existence specifically?",
+      "What did you do to the villagers, Steve? They won’t even look at you.",
+      "How many crafting tables do you *really* need?",
+      "Punching trees again? That your therapy?",
+      "Wooden pickaxe… for diamonds? Bold. Dumb, but bold.",
+      "That baby zombie is still chasing you. What's your move?",
+      "Redstone again? You said you'd stop.",
+      "Endermen giving you the side-eye again, huh?",
+      "Skeletons hit harder than your taxes. What’s the plan?",
+      "You brought a stick to the End? Oh, you're wild for that.",
+      "Be real, Steve—how are you this shredded with no gym?",
+      "Did that pig just look into your soul?"
+    ];
+
+    const answers = [
+      "Steve's the silent type. You know, it's part of his charm, right?",
+      "Look, Steve's house has an open-flame policy. Not his fault, it's a lifestyle.",
+      "Don't ask how. It involves a lot of squawking and no laws of physics.",
+      "Yep, straight into the fiery abyss. That's Steve's idea of fun.",
+      "It's okay, we all confuse a bed with a crafting table sometimes. Mostly when we're panicking.",
+      "TNT? Emotional healing, man. Don't question it.",
+      "Lava doesn’t chase Steve—Steve just never learns.",
+      "He’s both Steve *and* the greatest hero the world never knew.",
+      "Creepers? Just bad vibes. And bad aim. They aim straight for Steve’s house.",
+      "It’s personal now. Villagers remember everything, especially the betrayal.",
+      "Crafting tables everywhere! You never know when you’ll need twelve of them.",
+      "Tree-punching: it’s not just a hobby. It’s therapy, Steve style.",
+      "Wooden pickaxe… you’ve gotta admire the moxie. Not the execution.",
+      "The baby zombie never stops chasing. What’s Steve gonna do? Probably panic.",
+      "Redstone again? Steve, you know the cows are still avoiding you, right?",
+      "Endermen got *that* look in their eyes. You feel it, Steve?",
+      "Skeletons hit hard. But not as hard as life does, right Steve?",
+      "A stick in the End? You’re one crazy man, Steve.",
+      "Steve's got muscles made of pixelated power. No gym required.",
+      "That pig’s got *deep* issues with Steve. It’s a staring contest for the ages."
+    ];
+
+    let currentIndex = 0;
+
+    function getQuestion() {
+      if (currentIndex < questions.length) {
+        document.getElementById('question').innerText = questions[currentIndex];
+        document.getElementById('answer').innerText = "";
+      }
+    }
+
+    function showAnswer() {
+      if (currentIndex < answers.length) {
+        document.getElementById('answer').innerText = answers[currentIndex];
+        currentIndex++;
+        if (currentIndex === questions.length) {
+          endGame();
+        }
+      }
+    }
+
+    function endGame() {
+      document.getElementById('question').innerText = "That's all, Steve!";
+      document.getElementById('answer').innerText = "Farewell for now, my friend, and remember, When you're prepared for the end, you're prepared for anything!";
+      document.getElementById('restartButton').style.display = "inline-block";
+      document.querySelectorAll('button:not(#restartButton)').forEach(btn => btn.style.display = 'none');
+    }
+
+    function restartGame() {
+      currentIndex = 0;
+      document.getElementById('answer').innerText = '';
+      document.getElementById('restartButton').style.display = "none";
+      document.querySelectorAll('button').forEach(btn => btn.style.display = 'inline-block');
+      getQuestion();
+    }
+
+    getQuestion();
+  </script>
+
+</body>
+</html>
